@@ -67,17 +67,19 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN \
     echo "** update and setup ** " \
-    && apt update \
-    && apt install -y --no-install-recommends \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
     gosu \
-    libboost-all-dev \
+    libboost-filesystem-dev \
+    libboost-thread-dev \
+    libevent-dev \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && chmod +x /usr/local/bin/docker-entrypoint.sh \
     && groupadd -g 1000 namecoin \
     && useradd -u 1000 -g namecoin namecoin
 
-ENV PATH="/usr/local/bin" \
-    DATADIR="/data"
+
+ENV DATADIR="/data"
 EXPOSE 8334
 VOLUME /data
 CMD ["namecoind", "-printtoconsole", "-server=1"]
