@@ -1,13 +1,12 @@
 FROM mjmckinnon/ubuntubuild
 
 # Namecoin
-ARG VERSION="nc0.21.1"
-ARG GITREPO="https://github.com/namecoin/namecoin-core.git"
-ARG GITNAME="namecoin-core"
-ARG COMPILEFLAGS="--enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc"
-
-ENV DEBIAN_FRONTEND="noninteractive"
-ENV TZ="Australia/Melbourne"
+ENV VERSION="nc0.21.1" \
+    GITREPO="https://github.com/namecoin/namecoin-core.git" \
+    GITNAME="namecoin-core" \
+    COMPILEFLAGS="--enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
+    ENV DEBIAN_FRONTEND="noninteractive" \
+    ENV TZ="Australia/Melbourne"
 
 # Get the source from Github
 WORKDIR /root
