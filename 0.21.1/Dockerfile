@@ -4,7 +4,7 @@ FROM mjmckinnon/ubuntubuild
 ENV VERSION="nc0.21.1" \
     GITREPO="https://github.com/namecoin/namecoin-core.git" \
     GITNAME="namecoin-core" \
-    COMPILEFLAGS="--enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
+    COMPILEFLAGS="CXXFLAGS='-O2' --enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
     ENV DEBIAN_FRONTEND="noninteractive" \
     ENV TZ="Australia/Melbourne"
 
