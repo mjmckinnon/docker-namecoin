@@ -20,7 +20,7 @@ RUN \
     echo "** checkout and compile **" \
     && git checkout ${VERSION} \
     && ./autogen.sh \
-    && ./configure CXXFLAG="-O2" ${COMPILEFLAGS} \
+    && ./configure CXX=clang++ CC=clang CXXFLAG="-O2" ${COMPILEFLAGS} \
     && make \
     && mkdir -p /dist-files \
     && make install DESTDIR=/dist-files \
