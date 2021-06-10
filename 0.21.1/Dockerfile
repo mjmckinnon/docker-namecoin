@@ -5,8 +5,8 @@ ENV VERSION="nc0.21.1" \
     GITREPO="https://github.com/namecoin/namecoin-core.git" \
     GITNAME="namecoin-core" \
     COMPILEFLAGS="--enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
-    ENV DEBIAN_FRONTEND="noninteractive" \
-    ENV TZ="Australia/Melbourne"
+    DEBIAN_FRONTEND="noninteractive" \
+    TZ="Australia/Melbourne"
 
 # Get the source from Github
 WORKDIR /root
@@ -19,9 +19,9 @@ WORKDIR /root/${GITNAME}
 RUN \
     echo "** checkout and compile **" \
     && git checkout ${VERSION} \
-	&& ./autogen.sh \
-	&& ./configure CXXFLAG="-O2" ${COMPILEFLAGS} \
-	&& make \
+    && ./autogen.sh \
+    && ./configure CXXFLAG="-O2" ${COMPILEFLAGS} \
+    && make \
     && mkdir -p /dist-files \
     && make install DESTDIR=/dist-files \
     && echo "** removing extra lib files **" \
