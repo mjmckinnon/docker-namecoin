@@ -20,10 +20,13 @@ RUN \
     echo "** checkout and compile **" \
     && git checkout ${VERSION} \
     && ./autogen.sh \
-    && ./configure CXX=clang++ CC=clang CXXFLAG="-O2" ${COMPILEFLAGS} \
+    && ./configure CXXFLAG="-O2" ${COMPILEFLAGS} \
     && make \
     && mkdir -p /dist-files \
     && make install DESTDIR=/dist-files \
     && echo "** removing extra lib files **" \
     && find /dist-files -name "lib*.la" -delete \
-    && find /dist-files -name "lib*.a" -delete
+    && find /dist-files -name "lib*.a" -delete \
+    && strip /dist-files/usr/local/bin/* \
+    && rm -rf *
+
