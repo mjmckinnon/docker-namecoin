@@ -5,8 +5,7 @@ ENV VERSION="nc0.21.1" \
     GITREPO="https://github.com/namecoin/namecoin-core.git" \
     GITNAME="namecoin-core" \
     COMPILEFLAGS="--disable-tests --disable-bench --enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
-    DEBIAN_FRONTEND="noninteractive" \
-    TZ="Australia/Melbourne"
+    DEBIAN_FRONTEND="noninteractive"
 
 # Get the source from Github
 WORKDIR /root
@@ -29,4 +28,3 @@ RUN \
     && find /dist-files -name "lib*.a" -delete \
     && strip /dist-files/usr/local/bin/* \
     && rm -rf *
-
