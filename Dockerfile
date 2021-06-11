@@ -37,18 +37,28 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 # Copy the compiled files
 COPY --from=builder /dist-files/ /
 
+RUN \
+    echo "** setup the namecoin user **" \
+    && groupadd -g 1000 namecoin \
+    && useradd -u 1000 -g namecoin namecoin
+
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN \
     echo "** update and install dependencies ** " \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     gosu \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && chmod +x /usr/local/bin/docker-entrypoint.sh \
-    && groupadd -g 1000 namecoin \
-    && useradd -u 1000 -g namecoin namecoin
+    libboost-filesystem1.71.0 \
+    libboost-thread1.71.0 \
+    libevent-2.1-7 \
+    libevent-pthreads-2.1-7 \
+    libczmq4 \
+    && apt-get clean autoclean \
+    && apt-get autoremove --yes \
+    && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
+    && rm -rf /tmp/* /var/tmp/*
 
 ENV DATADIR="/data"
 EXPOSE 8334
 VOLUME /data
-CMD ["namecoind", "-printtoconsole", "-server=1", "-datadir=${DATADIR}"]
+CMD ["namecoind", "-printtoconsole"]
