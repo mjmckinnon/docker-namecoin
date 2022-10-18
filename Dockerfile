@@ -1,7 +1,7 @@
 FROM mjmckinnon/ubuntubuild as builder
 
 # Namecoin
-ENV VERSION="nc0.21.1" \
+ENV VERSION="nc23.0" \
     GITREPO="https://github.com/namecoin/namecoin-core.git" \
     GITNAME="namecoin-core" \
     COMPILEFLAGS="--disable-tests --disable-bench --enable-cxx --disable-shared --with-pic --disable-wallet --without-gui --without-miniupnpc" \
@@ -27,7 +27,7 @@ RUN \
     && find /dist-files -name "lib*.a" -delete \
     && cd .. && rm -rf ${GITREPO}
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL maintainer="Michael J. McKinnon <mjmckinnon@gmail.com>"
 
 # Put our entrypoint script in
@@ -48,8 +48,8 @@ RUN \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
     gosu \
-    libboost-filesystem1.71.0 \
-    libboost-thread1.71.0 \
+    libboost-filesystem1.74.0 \
+    libboost-thread1.74.0 \
     libevent-2.1-7 \
     libevent-pthreads-2.1-7 \
     libczmq4 \
