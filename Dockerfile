@@ -1,3 +1,4 @@
+# First stage build
 FROM mjmckinnon/ubuntubuild as builder
 
 # Namecoin
@@ -9,12 +10,12 @@ ENV VERSION="nc23.0" \
 
 # Get the source from Github
 WORKDIR /root
-# Checkout the right version, compile, and grab
+# Checkout the right version
+RUN git clone ${GITREPO} --branch ${VERSION}
+WORKDIR /root/${GITNAME}
+# Configure and compile
 RUN \
-    echo "** checkout and compile **" \
-    && git clone ${GITREPO} \
-    && cd /root/${GITNAME} \
-    && git checkout ${VERSION} \
+    echo "** configure and compile **" \
     && ./autogen.sh \
     && ./configure CXXFLAG="-O2" LDFLAGS=-static-libstdc++ ${COMPILEFLAGS} \
     && make \
@@ -27,10 +28,11 @@ RUN \
     && find /dist-files -name "lib*.a" -delete \
     && cd .. && rm -rf ${GITREPO}
 
+# Final stage
 FROM ubuntu:22.04
 LABEL maintainer="Michael J. McKinnon <mjmckinnon@gmail.com>"
 
-# Put our entrypoint script in
+# Copy and set our entrypoint script
 COPY ./docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
@@ -53,6 +55,7 @@ RUN \
     libevent-2.1-7 \
     libevent-pthreads-2.1-7 \
     libczmq4 \
+    && echo "** cleaning up artifacts **" \
     && apt-get clean autoclean \
     && apt-get autoremove --yes \
     && rm -rf /var/lib/{apt,dpkg,cache,log}/ \
